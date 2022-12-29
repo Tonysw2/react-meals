@@ -4,43 +4,21 @@ import Card from '../UI/Card'
 import classes from './AvailableMeals.module.css'
 import MealItem from './MealItem/MealItem'
 
-// const DUMMY_MEALS = [
-//   {
-//     id: 'm1',
-//     name: 'Sushi',
-//     description: 'Finest fish and veggies',
-//     price: 22.99,
-//   },
-//   {
-//     id: 'm2',
-//     name: 'Schnitzel',
-//     description: 'A german specialty!',
-//     price: 16.5,
-//   },
-//   {
-//     id: 'm3',
-//     name: 'Barbecue Burger',
-//     description: 'American, raw, meaty',
-//     price: 12.99,
-//   },
-//   {
-//     id: 'm4',
-//     name: 'Green Bowl',
-//     description: 'Healthy...and green...',
-//     price: 18.99,
-//   },
-// ];
-
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
-  useEffect(() => {
-    async function getMeals() {
+  async function getMeals() {
+    try {
+      setIsLoading(true)
       const response = await axios.get(
         'https://react-food-be722-default-rtdb.firebaseio.com/meals.json',
       )
       const data = response.data
+
       const loadedMeals = []
+
       for (const meal in data) {
         loadedMeals.push({
           id: meal,
@@ -49,11 +27,35 @@ const AvailableMeals = () => {
           price: data[meal].price,
         })
       }
-      setMeals(loadedMeals)
-    }
 
+      setMeals(loadedMeals)
+    } catch (error) {
+      console.log(error)
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
     getMeals()
   }, [])
+
+  if (isLoading) {
+    return (
+      <section className={classes.loading}>
+        <p>Loading...</p>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className={classes.error}>
+        <p>Something went wrong!</p>
+      </section>
+    )
+  }
 
   const mealsList = meals.map((meal) => (
     <MealItem

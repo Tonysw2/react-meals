@@ -11,6 +11,22 @@
   padding: 0;
 }
 
+.loading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.6;
+  color: white;
+}
+
+.error {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.6;
+  color: red;
+}
+
 @keyframes meals-appear {
   from {
     opacity: 0;
