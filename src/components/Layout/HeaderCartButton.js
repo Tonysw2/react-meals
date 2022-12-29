@@ -1,49 +1,49 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react'
 
-// JS Imports
-import CartIcon from '../Cart/CartIcon';
-import CartContext from '../../store/CartContext';
-
-// CSS Imports
-import classes from './HeaderCartButton.module.css';
+import CartContext from '../../store/cart-context'
+import CartIcon from '../Cart/CartIcon'
+import classes from './HeaderCartButton.module.css'
 
 const HeaderCartButton = (props) => {
-    const [btnHighlighted, setBtnHighLighted] = useState(false);
-    const cartCtx = useContext(CartContext);
-    const { items } = cartCtx;
+  const [btnIsHighlighted, setBtnIsHighlighted] = useState(false)
+  const cartCtx = useContext(CartContext)
 
-    const numberCartItems = items.reduce((curNum, item) => {
-        return curNum + item.amount;
-    }, 0);
+  const { items } = cartCtx
 
-    const btnClasses = `${classes.button} ${
-        btnHighlighted ? classes.bump : ''
-    }`;
+  const numberOfCartItems = items.reduce((curNumber, item) => {
+    return curNumber + item.amount
+  }, 0)
 
-    useEffect(() => {
-        if (items.length === 0) {
-            return;
-        }
-        setBtnHighLighted(true);
+  const btnClasses = `${classes.button} ${btnIsHighlighted ? classes.bump : ''}`
 
-        const timer = setTimeout(() => {
-            setBtnHighLighted(false);
-        }, 300);
+  useEffect(() => {
+    if (items.length === 0) {
+      return
+    }
+    setBtnIsHighlighted(true)
 
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [items]);
+    const timer = setTimeout(() => {
+      setBtnIsHighlighted(false)
+    }, 300)
 
-    return (
-        <button className={btnClasses} onClick={props.onClick}>
-            <span className={classes.icon}>
-                <CartIcon />
-            </span>
-            <span>Your Cart</span>
-            <span className={classes.badge}>{numberCartItems}</span>
-        </button>
-    );
-};
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [items])
 
-export default HeaderCartButton;
+  return (
+    <button
+      className={btnClasses}
+      onClick={props.onClick}
+      disabled={items.length === 0}
+    >
+      <span className={classes.icon}>
+        <CartIcon />
+      </span>
+      <span>Your Cart</span>
+      <span className={classes.badge}>{numberOfCartItems}</span>
+    </button>
+  )
+}
+
+export default HeaderCartButton
