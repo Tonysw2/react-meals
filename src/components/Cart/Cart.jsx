@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import { api } from '../../lib/axios'
 
 import CartContext from '../../store/cart-context'
 import Modal from '../UI/Modal'
@@ -24,6 +25,17 @@ const Cart = (props) => {
 
   function handleShowCheckout() {
     setIsShowingCheckout(true)
+  }
+
+  async function submitOrderHandler(userData) {
+    try {
+      await api.post('orders.json', {
+        user: userData,
+        orderedItems: cartCtx.items,
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -58,7 +70,10 @@ const Cart = (props) => {
           )}
         </div>
       ) : (
-        <Checkout />
+        <Checkout
+          onSubmitOrderHandler={submitOrderHandler}
+          onCancel={props.onClose}
+        />
       )}
     </Modal>
   )

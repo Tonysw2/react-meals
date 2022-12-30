@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { api } from '../../lib/axios'
 import Card from '../UI/Card'
 import classes from './AvailableMeals.module.css'
 import MealItem from './MealItem/MealItem'
@@ -12,9 +12,7 @@ const AvailableMeals = () => {
   async function getMeals() {
     try {
       setIsLoading(true)
-      const response = await axios.get(
-        'https://react-food-be722-default-rtdb.firebaseio.com/meals.json',
-      )
+      const response = await api.get('/meals.json')
       const data = response.data
 
       const loadedMeals = []
