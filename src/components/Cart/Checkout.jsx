@@ -1,4 +1,5 @@
-import { useRef } from 'react'
+import { useContext, useRef } from 'react'
+import CartContext from '../../store/cart-context'
 import classes from './Checkout.module.css'
 
 const Checkout = (props) => {
@@ -6,6 +7,8 @@ const Checkout = (props) => {
   const streetInputRef = useRef()
   const postalCodeInputRef = useRef()
   const cityInputRef = useRef()
+
+  const { resetItems } = useContext(CartContext)
 
   const isEmpty = (value) => value.trim() === ''
   const isNotEightChars = (value) => value.trim().length < 8
@@ -37,6 +40,9 @@ const Checkout = (props) => {
       postalCode,
       city,
     })
+
+    props.onCancel()
+    resetItems()
   }
 
   return (
