@@ -9,17 +9,16 @@ import Checkout from './Checkout'
 
 const Cart = (props) => {
   const [isShowingCheckout, setIsShowingCheckout] = useState(false)
-
   const cartCtx = useContext(CartContext)
 
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`
   const hasItems = cartCtx.items.length > 0
 
-  const cartItemRemoveHandler = (id) => {
+  function cartItemRemoveHandler(id) {
     cartCtx.removeItem(id)
   }
 
-  const cartItemAddHandler = (item) => {
+  function cartItemAddHandler(item) {
     cartCtx.addItem(item)
   }
 
@@ -73,6 +72,7 @@ const Cart = (props) => {
         <Checkout
           onSubmitOrderHandler={submitOrderHandler}
           onCancel={props.onClose}
+          onShowSuccess={props.onShowSuccess}
         />
       )}
     </Modal>

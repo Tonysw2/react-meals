@@ -28,7 +28,6 @@ const Checkout = (props) => {
 
     const isFormValid =
       isNameValid && isStreetValid && isPostalCodeValid && isCityNameValid
-    console.log(isNameValid, isStreetValid, isPostalCodeValid, isCityNameValid)
 
     if (!isFormValid) {
       return null
@@ -42,6 +41,7 @@ const Checkout = (props) => {
     })
 
     props.onCancel()
+    props.onShowSuccess()
     resetItems()
   }
 
